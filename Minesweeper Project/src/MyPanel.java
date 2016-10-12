@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
+	
 	private static final long serialVersionUID = 3426940946811133635L;
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
@@ -16,33 +17,15 @@ public class MyPanel extends JPanel {
 	public int y = -1;
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
-	//public int[][] arrayMine = new int[11][11];
-	//public Random generator = new Random();
+	public Random generator = new Random();
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
+	public int[][] mineArray = new int[TOTAL_COLUMNS][TOTAL_ROWS];
+	public int[][] minasAlrededor= new int [TOTAL_COLUMNS][TOTAL_ROWS];
+	public int c=0;
+	int mine=0;
 	
-	public void MinePositions(){
-	int[][] arrayMine = new int[11][11];
-	Random generator = new Random();
-	int c=0;
 	
-	while(c<9);
-	{
-		int x=1+generator.nextInt(8), y=1+generator.nextInt(8);
-		if(arrayMine[x][y]==-1)
-		{
-		}
-		else{
-			
-		arrayMine[x][y]=-1;
-		c++;
-		}
-	}
-	for(int i=1;i<9;i++){
-		for(int j=1;j<9;j++){
-			System.out.println(arrayMine[i][j]);
-		}
-	}
-	}
+
 
 	public MyPanel() {   //This is the constructor... this code runs first to initialize
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
@@ -54,24 +37,65 @@ public class MyPanel extends JPanel {
 		if (TOTAL_ROWS + (new Random()).nextInt(1) < 3) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
-//		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //Top row
-//			colorArray[x][0] = Color.WHITE;
-//		}
-//		for (int y = 0; y < TOTAL_ROWS; y++) {   //Left column
-//			colorArray[0][y] = Color.WHITE;
-//		}
+		
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
 				colorArray[x][y] = Color.WHITE;
+				
 			}
+		}
+		do
+		{
+			int x=1+generator.nextInt(8), y=1+generator.nextInt(8);
+			if(mineArray[x][y]==-1)
+			{
+			}
+			else{
+				
+			mineArray[x][y]=-1;
+			c++;
+			}
+		}while(c<9);
+		
+		
+		for(int i=1;i<=9;i++)
+		{
+			for(int j=1;j<=9;j++)
+			{
+				
+				for(int h=i-1;h<=i+1;h++)
+				{
+					for(int k=j-1;k<=j+1;k++)
+					{
+						if(mineArray[h][k]==-1)
+						{
+							mine++;
+						}
+					}
+				}
+				minasAlrededor[j][i]=mine;
+				mine=0;
+			}
+		}
+		
+		for(int i=0;i<=10;i++)
+		{
+			minasAlrededor[i][0]=-1;
+			minasAlrededor[i][10]=-1;
+			minasAlrededor[0][i]=-1;
+			minasAlrededor[10][i]=-1;
+		}
+		
 		}
 		
 		
 		
-	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+		
+		
+	       
 		//Compute interior coordinates
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
@@ -84,7 +108,7 @@ public class MyPanel extends JPanel {
 		//Paint the background
 		g.setColor(Color.BLACK);
 		g.fillRect(x1, y1, width + 1, height + 1);
-
+		
 		//Draw the grid minus the bottom row (which has only one cell)
 		//By default, the grid will be 10x10 (see above: TOTAL_COLUMNS and TOTAL_ROWS) 
 		g.setColor(Color.BLACK);
@@ -95,9 +119,7 @@ public class MyPanel extends JPanel {
 			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS )));
 		}
 
-		//Draw an additional cell at the bottom left
-		//g.drawRect(x1 + GRID_X, y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS - 1)), INNER_CELL_SIZE + 1, INNER_CELL_SIZE + 1);
-
+		
 		//Paint cell colors
 		for (int x = 1; x < TOTAL_COLUMNS-1; x++) {
 			for (int y = 1; y < TOTAL_ROWS-1; y++) {
@@ -108,6 +130,17 @@ public class MyPanel extends JPanel {
 				}
 			}
 		}
+		g.setColor(Color.WHITE);
+		for(int i=1;i<=9;i++){
+			for(int j=1;j<=9;j++){
+				int a = minasAlrededor[j][i] ;
+				String intToString = "" + a;
+				if(a!=0){
+					g.drawString(intToString, i*30+37, j*30+43);
+				
+			}
+			}
+		}	
 	}
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
@@ -158,12 +191,7 @@ public class MyPanel extends JPanel {
 			return -1;
 		}
 		return y;
-	} 
-//	public int[][] minePostion(){
-//		for (int x = 1; x < TOTAL_COLUMNS-1; x++) {   //The rest of the grid
-//			for (int y = 1; y < TOTAL_ROWS-1; y++) {
-//				minePostion[x][y]=-1;
-//			}
-//	}
+	}
+	
 	
 }
