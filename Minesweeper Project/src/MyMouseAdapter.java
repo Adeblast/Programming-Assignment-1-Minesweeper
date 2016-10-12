@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 public class MyMouseAdapter extends MouseAdapter {
 	int newNumColor=0,pastNumColor=0;
-	int counter=0;
+	int counter=0, counter2=0;
 	public void mousePressed(MouseEvent e) {
 		switch (e.getButton()) {
 		case 1:		//Left mouse button
@@ -101,7 +101,33 @@ public class MyMouseAdapter extends MouseAdapter {
 						}
 						else {
 							
-							
+							for(int i=1;i<=9;i++){
+								for(int j=1;j<=9;j++){
+									
+									if(myPanel.colorArray[i][j] == Color.RED && myPanel.mineArray[i][j]==-1){
+										
+										counter2++;
+									}
+									
+									
+									}
+								}
+							if(counter2==9)
+							{
+								for(int i=1;i<=9;i++){
+									for(int j=1;j<=9;j++){
+										if(myPanel.mineArray[i][j]==-1){
+											myPanel.colorArray[i][j] = Color.BLACK;
+										}
+										else{
+											myPanel.colorArray[i][j] = Color.GRAY;
+										}
+									}
+								}
+								myPanel.repaint();
+								JOptionPane.showMessageDialog(null, "WIN GAME");
+								
+							}
 							
 							if(myPanel.mineArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY]==-1){
 								//Si el primero en tocar es una mina
@@ -134,7 +160,7 @@ public class MyMouseAdapter extends MouseAdapter {
 													{
 														for(int i=k-1;i<=k+1;i++)
 														{
-															if(myPanel.mineArray[i][j]==0){
+															if(myPanel.mineArray[i][j]==0 && !(myPanel.colorArray[i][j]==Color.RED)){
 																myPanel.colorArray[i][j] = Color.GRAY;
 															}
 															
@@ -152,12 +178,17 @@ public class MyMouseAdapter extends MouseAdapter {
 									if(myPanel.colorArray[i][j] == Color.WHITE)
 									{
 										counter++;
+										
+									}
+									if(myPanel.colorArray[i][j] == Color.RED && myPanel.mineArray[i][j]==-1){
+										
+										counter2++;
 									}
 									
 									
 									}
 								}
-							if(counter==9)
+							if(counter==9 || counter2==9)
 							{
 								for(int i=1;i<=9;i++){
 									for(int j=1;j<=9;j++){
@@ -213,6 +244,7 @@ public class MyMouseAdapter extends MouseAdapter {
 			else {
 				if(myPanel1.colorArray[myPanel1.mouseDownGridX][myPanel1.mouseDownGridY] == Color.WHITE){
 					myPanel1.colorArray[myPanel1.mouseDownGridX][myPanel1.mouseDownGridY] = Color.RED;
+
 					
 				}
 				else if(myPanel1.colorArray[myPanel1.mouseDownGridX][myPanel1.mouseDownGridY] == Color.RED){

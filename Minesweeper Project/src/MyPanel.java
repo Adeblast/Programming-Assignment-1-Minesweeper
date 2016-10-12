@@ -67,7 +67,7 @@ public class MyPanel extends JPanel {
 				{
 					for(int k=j-1;k<=j+1;k++)
 					{
-						if(mineArray[h][k]==-1)
+						if(mineArray[k][h]==-1)
 						{
 							mine++;
 						}
@@ -130,17 +130,26 @@ public class MyPanel extends JPanel {
 				}
 			}
 		}
-		g.setColor(Color.WHITE);
-		for(int i=1;i<=9;i++){
-			for(int j=1;j<=9;j++){
-				int a = minasAlrededor[j][i] ;
-				String intToString = "" + a;
-				if(a!=0){
-					g.drawString(intToString, i*30+37, j*30+43);
+		
+		for(int i=1;i<=9;i++)
+		{
+			for(int j=1;j<=9;j++)
+			{
+				if(colorArray[j][i]==Color.WHITE || colorArray[j][i]==Color.GRAY ||colorArray[j][i]==Color.BLACK)
+				{
+					g.setColor(Color.WHITE);
+					int a = minasAlrededor[j][i] ;
+					String intToString = "" + a;
+						if(a!=0 && a!=-1)
+						{
+							g.drawString(intToString, j*30+37, i*30+43);
+						}
+				}
+			}
+		}
+
 				
-			}
-			}
-		}	
+			
 	}
 	public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
