@@ -180,15 +180,10 @@ public class MyMouseAdapter extends MouseAdapter {
 										counter++;
 										
 									}
-									if(myPanel.colorArray[i][j] == Color.RED && myPanel.mineArray[i][j]==-1){
-										
-										counter2++;
-									}
-									
 									
 									}
 								}
-							if(counter==9 || counter2==9)
+							if(counter==9)
 							{
 								for(int i=1;i<=9;i++){
 									for(int j=1;j<=9;j++){
